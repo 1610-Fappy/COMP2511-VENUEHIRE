@@ -21,7 +21,7 @@ public class venue extends amountRooms {
     }
 
     public void addRoom(String roomName, String roomSize) {
-        rooms.add(room(roomName, roomSize));
+        rooms.add(new room(roomName, roomSize));
 
         switch (roomSize) {
 
