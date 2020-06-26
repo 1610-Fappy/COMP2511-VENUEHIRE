@@ -29,13 +29,17 @@ public class VenueHireSystem {
     }
 
     private void processCommand(JSONObject json) {
+        
+        JSONObject result;
+        
         switch (json.getString("command")) {
 
         case "room":
             String venue = json.getString("venue");
             String room = json.getString("room");
             String size = json.getString("size");
-            addRoom(venue, room, size);
+            result = addRoom(venue, room, size);
+            System.out.print(result.toString);
             break;
 
         case "request":
@@ -46,7 +50,7 @@ public class VenueHireSystem {
             int medium = json.getInt("medium");
             int large = json.getInt("large");
 
-            JSONObject result = request(id, start, end, small, medium, large);
+            result = request(id, start, end, small, medium, large);
 
             System.out.println(result.toString(2));
             break;
@@ -56,7 +60,15 @@ public class VenueHireSystem {
     }
 
     private void addRoom(String venue, String room, String size) {
-        // TODO Process the room command
+
+        JSONObject result = new JSONObject();
+
+        venue newVenue = new venue(venue);
+        newVenue.addRoom(room, size);
+
+        result.put("venue", newVenue.getVenueName());
+        result.put("Room", newVenue.getlargeRooms());
+        return result;
     }
 
     public JSONObject request(String id, LocalDate start, LocalDate end,
