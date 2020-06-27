@@ -19,6 +19,10 @@ public class amountRooms {
         this.smallRooms = small;
     }
 
+    public int getAmountRooms() {
+        return largeRooms + medRooms + smallRooms;
+    }
+
     public void incrementLargeRooms() {
         setRooms(largeRooms + 1, medRooms, smallRooms);
     }

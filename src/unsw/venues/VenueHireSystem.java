@@ -65,7 +65,6 @@ public class VenueHireSystem {
 
     private void addRoom(String venue, String room, String size) {
 
-        JSONObject result = new JSONObject();
         venue newVenue;
 
         if (!venueNames.contains(venue)) {
@@ -85,16 +84,52 @@ public class VenueHireSystem {
 
         // TODO Process the request commmand
 
-        // FIXME Shouldn't always produce the same answer
-        result.put("status", "success");
-        result.put("venue", "Zoo");
+        ArrayList<venue> availVenue = checkRoomAmount(large, medium, small);
+        ArrayList<room> availRoom = new ArrayList<room>();
 
-        JSONArray rooms = new JSONArray();
-        rooms.put("Penguin");
-        rooms.put("Hippo");
+        for (int i = 0; i < availVenue.size() && availRoom.size() < (large + medium + small); i++) {
+            venue venueCheck = availVenue.get(i);
+            availRoom = new ArrayList<room>();
+            if (small > 0) {
+                availRoom.addAll(venueCheck.checkRoomBooking(venueCheck.getSmallRooms(), id, small, start, end));
+            }
+            if (medium > 0) {
+                availRoom.addAll(venueCheck.checkRoomBooking(venueCheck.getMedRooms(), id, medium, start, end));
+            }
+            if (large > 0) {
+                availRoom.addAll(venueCheck.checkRoomBooking(venueCheck.getLargeRooms(), id, large, start, end));
+            }
+        }
+        if (availVenue.size() > 0 && availRoom.size() == (large + medium + small)) {
+            result.put("status", "success");
+            result.put("venue", availVenue.get(0).getVenueName());
+            result.put("rooms", convertArrayJSON(availRoom));
+        }
+        else {
+            result.put("status", "rejected");
+        }
 
-        result.put("rooms", rooms);
         return result;
+    }
+
+    public ArrayList<venue> checkRoomAmount(int large, int medium, int small) {
+
+        ArrayList<venue> availVenue = new ArrayList<venue>();
+        
+        for (int i = 0; i < venueList.size(); i++) {
+            if (venueList.get(i).checkAmountRooms(large, medium, small)) {
+                availVenue.add(venueList.get(i));
+            }
+        }
+        return availVenue;
+    }
+
+    private JSONArray convertArrayJSON(ArrayList<room> roomList) {
+        JSONArray rooms = new JSONArray();
+        for (int i = 0; i < roomList.size(); i++) {
+            rooms.put(roomList.get(i).getRoomName());
+        }
+        return rooms;
     }
 
     public static void main(String[] args) {

@@ -30,7 +30,7 @@ public class booking {
         return startDate;
     }
 
-    public LocalDate getEnddDate() {
+    public LocalDate getEndDate() {
         return enddDate;
     }
     

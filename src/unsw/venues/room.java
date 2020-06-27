@@ -1,6 +1,7 @@
 package unsw.venues;
 
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class room {
 
@@ -19,5 +20,25 @@ public class room {
 
     public String getRoomName() {
         return roomName;
+    }
+
+    public ArrayList<booking> getBookings() {
+        return bookings;
+    }
+
+    public Boolean CheckBooking(LocalDate start, LocalDate end) {
+        if (bookings.get(0).getStartDate().isAfter(end)) {
+            return true;
+        }
+        for (int i = 1; i < bookings.size(); i++) {
+            if (bookings.get(i - 1).getEndDate().isBefore(start) && bookings.get(i).getStartDate().isAfter(end)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addBooking(booking newBooking) {
+        bookings.add(newBooking);
     }
 }
