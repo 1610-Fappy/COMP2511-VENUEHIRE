@@ -38,16 +38,32 @@ public class room {
         return false;
     }
 
-    public void addBooking(booking newBooking) {
-        bookings.add(newBooking);
+    public int CheckBookingLocation(LocalDate start, LocalDate end) {
+        if (bookings.size() == 0) {
+            return 0;
+        }
+        if (bookings.get(0).getStartDate().isAfter(end)) {
+            return 0;
+        }
+        for (int i = 1; i < bookings.size(); i++) {
+            if (bookings.get(i - 1).getEndDate().isBefore(start) && bookings.get(i).getStartDate().isAfter(end)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
-    public booking cancelBooking(String id) {
+    public void addBooking(booking newBooking, LocalDate start, LocalDate end) {
+        bookings.add(CheckBookingLocation(start, end), newBooking);
+    }
+
+    public booking cancelBookings(String id) {
         booking tempHold = new booking();
         for (int i = 0; i < bookings.size(); i++) {
             if (bookings.get(i).getId().equals(id)) {
                 tempHold = bookings.get(i);
                 bookings.remove(i);
+                i = bookings.size();
             }
         }
         return tempHold;

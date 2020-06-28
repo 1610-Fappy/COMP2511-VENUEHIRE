@@ -64,6 +64,19 @@ public class VenueHireSystem {
             
             cancel(id1);
             break;
+        
+        case "change":
+            String iD = json.getString("id");
+            LocalDate start1 = LocalDate.parse(json.getString("start"));
+            LocalDate end1 = LocalDate.parse(json.getString("end"));
+            int small1 = json.getInt("small");
+            int medium1 = json.getInt("medium");
+            int large1 = json.getInt("large");
+
+            result = change(iD, start1, end1, small1, medium1, large1);
+
+            System.out.println(result.toString(2));
+            break;
         // TODO Implement other commands
         }
     }
@@ -114,6 +127,28 @@ public class VenueHireSystem {
             result.put("status", "rejected");
         }
 
+        return result;
+    }
+
+    public JSONObject change(String id, LocalDate start, LocalDate end,
+    int small, int medium, int large) {
+        JSONObject result = new JSONObject();
+        result.put("status", "");
+        booking tempHold = new booking();
+        for (int i = 0; i < venueList.size(); i++) {
+            tempHold = venueList.get(i).cancelBooking(id);
+            System.out.println(tempHold.getId());
+            if (tempHold.getId().equals(id)) {
+                result = request(id, start, end, small, medium, large);
+                i = venueList.size();
+            }
+        }
+        String status = result.getString("status");
+        if (status.equals("rejected")) {
+            for (int i = 0; i < tempHold.getbookedRooms().size(); i++) {
+                tempHold.getbookedRooms().get(i).addBooking(tempHold, start, end);
+            }
+        }
         return result;
     }
 

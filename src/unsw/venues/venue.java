@@ -63,14 +63,14 @@ public class venue extends amountRooms {
                 if (roomList.get(i).CheckBooking(start, end)) {
                     availRooms.add(roomList.get(i));
                     booking newBooking = new booking(id, start, end);
-                    roomList.get(i).addBooking(newBooking);
+                    roomList.get(i).addBooking(newBooking, start, end);
                     newBooking.addRoomBook(roomList.get(i));
                     num--;
                 }
             }
             else {
                 availRooms.add(roomList.get(i));
-                roomList.get(i).addBooking(new booking(id, start, end));
+                roomList.get(i).addBooking(new booking(id, start, end), start, end);
                 num--;                
             }
         }
@@ -89,11 +89,11 @@ public class venue extends amountRooms {
         bookRooms.addAll(smallRooms);
 
         for (int i = 0; i < bookRooms.size(); i++) {
-            if (temp != new booking()) {
-                temp = bookRooms.get(i).cancelBooking(id);
+            if (temp.getId().equals("")) {
+                temp = bookRooms.get(i).cancelBookings(id);
             }
             else {
-                bookRooms.get(i).cancelBooking(id);
+                bookRooms.get(i).cancelBookings(id);
             }
         }
         return temp;

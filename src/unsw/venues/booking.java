@@ -39,4 +39,8 @@ public class booking {
     public void addRoomBook(room newRoom) {
         rooms.add(newRoom);
     }
+
+    public ArrayList<room> getbookedRooms() {
+        return rooms;
+    }
 }
