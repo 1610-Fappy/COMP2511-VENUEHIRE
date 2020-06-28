@@ -10,7 +10,6 @@ public class venue extends amountRooms {
     private ArrayList<room> medRooms = new ArrayList<room>();
     private ArrayList<room> smallRooms = new ArrayList<room>();
 
-
     public venue() {
         super();
     }
@@ -49,7 +48,6 @@ public class venue extends amountRooms {
 
     public Boolean checkAmountRooms(int large, int medium, int small) {
         if (getlargeRooms() >= large && getmedRooms() >= medium && getsmallRooms() >= small) {
-            System.out.println(getVenueName());
             return true;
         }
 
@@ -64,7 +62,9 @@ public class venue extends amountRooms {
             if (roomList.get(i).getBookings().size() != 0) {
                 if (roomList.get(i).CheckBooking(start, end)) {
                     availRooms.add(roomList.get(i));
-                    roomList.get(i).addBooking(new booking(id, start, end));
+                    booking newBooking = new booking(id, start, end);
+                    roomList.get(i).addBooking(newBooking);
+                    newBooking.addRoomBook(roomList.get(i));
                     num--;
                 }
             }
@@ -79,6 +79,24 @@ public class venue extends amountRooms {
             return availRooms;
         }
         return new ArrayList<room>();
+    }
+
+    public booking cancelBooking(String id) {
+        ArrayList<room> bookRooms = new ArrayList<room>();
+        booking temp = new booking();
+        bookRooms.addAll(largeRooms);
+        bookRooms.addAll(medRooms);
+        bookRooms.addAll(smallRooms);
+
+        for (int i = 0; i < bookRooms.size(); i++) {
+            if (temp != new booking()) {
+                temp = bookRooms.get(i).cancelBooking(id);
+            }
+            else {
+                bookRooms.get(i).cancelBooking(id);
+            }
+        }
+        return temp;
     }
 
     public ArrayList<room> getLargeRooms() {

@@ -41,4 +41,15 @@ public class room {
     public void addBooking(booking newBooking) {
         bookings.add(newBooking);
     }
+
+    public booking cancelBooking(String id) {
+        booking tempHold = new booking();
+        for (int i = 0; i < bookings.size(); i++) {
+            if (bookings.get(i).getId().equals(id)) {
+                tempHold = bookings.get(i);
+                bookings.remove(i);
+            }
+        }
+        return tempHold;
+    }
 }

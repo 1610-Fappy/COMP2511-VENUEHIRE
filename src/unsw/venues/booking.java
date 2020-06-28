@@ -1,12 +1,14 @@
 package unsw.venues;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class booking {
     
     private String id = "";
     private LocalDate startDate;
     private LocalDate enddDate;
+    private ArrayList<room> rooms = new ArrayList<room>();
 
     public booking() {
         super();
@@ -34,4 +36,7 @@ public class booking {
         return enddDate;
     }
     
+    public void addRoomBook(room newRoom) {
+        rooms.add(newRoom);
+    }
 }

@@ -59,6 +59,11 @@ public class VenueHireSystem {
             System.out.println(result.toString(2));
             break;
 
+        case "cancel":
+            String id1 = json.getString("id");
+            
+            cancel(id1);
+            break;
         // TODO Implement other commands
         }
     }
@@ -110,6 +115,12 @@ public class VenueHireSystem {
         }
 
         return result;
+    }
+
+    public void cancel(String id) {
+        for (int i = 0; i < venueList.size(); i++) {
+            venueList.get(i).cancelBooking(id);
+        }
     }
 
     public ArrayList<venue> checkRoomAmount(int large, int medium, int small) {
